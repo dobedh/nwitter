@@ -1,12 +1,14 @@
 import firebase from "firebase/app";
+import dotenv from "dotenv";
+dotenv.config();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAv_9yPx5dbvJ0rBSY7r-jPiTzNIwzXSyQ",
-  authDomain: "nwiter-15745.firebaseapp.com",
-  projectId: "nwiter-15745",
-  storageBucket: "nwiter-15745.appspot.com",
-  messagingSenderId: "976518676806",
-  appId: "1:976518676806:web:f1fb45a4ad52481871a547",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_API_KEY,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 export default firebase.initializeApp(firebaseConfig);
