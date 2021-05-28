@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
 
 function App() {
-  console.log(authService.currentUser);
+  const [init, setInit] = useState(false);
   const [isLoggedin, setLoggedin] = useState(false);
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setLoggedin(true);
+      } else {
+        setLoggedin(false);
+      }
+      setInit(true);
+    });
+  }, []);
   return (
-    <div>
-      <AppRouter isLoggedin={isLoggedin} />
-    </div>
+    <>
+      {init ? <AppRouter isLoggedin={isLoggedin} /> : "is logging..."}
+
+      <footer>&copy; {new Date().getFullYear()}Nwitter</footer>
+    </>
   );
 }
 
