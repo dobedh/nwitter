@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "fbase";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
   const getNeweets = async () => {
@@ -16,13 +16,14 @@ const Home = () => {
   };
   useEffect(() => {
     getNeweets();
+    const getNweet = db.collection("nweets").onSnapshot();
   }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     await db
       .collection("nweets")
-      .add({ nweet, createdAt: Date.now() })
+      .add({ text: nweet, createdAt: Date.now(), creatorId: userObj.uid })
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
       })
@@ -52,7 +53,7 @@ const Home = () => {
       <div>
         {nweets.map((nweet) => (
           <div key={nweet.id}>
-            <h4>{nweet.nweet}</h4>
+            <h4>{nweet.text}</h4>
           </div>
         ))}
       </div>

@@ -5,7 +5,7 @@ import Home from "routes/Home";
 import Profile from "routes/Profile";
 import Navigation from "./Navigation";
 
-const AppRouter = ({ isLoggedin }) => {
+const AppRouter = ({ userObj, isLoggedin }) => {
   console.log(isLoggedin);
   return (
     <Router>
@@ -14,7 +14,7 @@ const AppRouter = ({ isLoggedin }) => {
         {isLoggedin ? (
           <>
             <Route exact path="/">
-              <Home />
+              <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
               <Profile />
