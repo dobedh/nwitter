@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "fbase";
+import Nweet from "components/Nweet";
 import { doc } from "prettier";
 
 const Home = ({ userObj }) => {
@@ -48,9 +49,11 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {nweets.map((nweet) => (
-          <div key={nweet.id}>
-            <h4>{nweet.text}</h4>
-          </div>
+          <Nweet
+            nweetObj={nweet}
+            key={nweet.id}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
