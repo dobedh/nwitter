@@ -7,16 +7,33 @@ const Nweet = ({ nweetObj, isOwner }) => {
   const toggleEditing = () => {
     setEditing((prev) => !prev);
   };
-  const onChange = (event) => {};
   const onDeleteClick = () => {
-    db.doc(`nweets/${nweetObj.id}`).delete();
+    const ok = window.confirm("확실합니까?");
+    if (ok) {
+      db.doc(`nweets/${nweetObj.id}`).delete();
+    }
+  };
+  const onSubmit = (event) => {
+    event.preventDefault();
+    db.doc(`nweets/${nweetObj.id}`).update({ text: newNweet });
+    setEditing(false);
+  };
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setNewNweet(value);
   };
   return (
     <div key={nweetObj.id}>
       {editing ? (
-        <form>
-          <input value={newNweet} required />
-        </form>
+        <>
+          <form onSubmit={onSubmit}>
+            <input type="text" value={newNweet} onChange={onChange} required />
+            <input type="submit" value="수정" />
+          </form>
+          <button onClick={toggleEditing}>취소</button>
+        </>
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
