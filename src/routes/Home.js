@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { db } from "fbase";
+import { db, storageService } from "fbase";
 import Nweet from "components/Nweet";
 import { doc } from "prettier";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
@@ -19,16 +20,19 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await db
-      .collection("nweets")
-      .add({ text: nweet, createdAt: Date.now(), creatorId: userObj.uid })
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
-    setNweet("");
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    const response = await fileRef.putString(attachment, "data_url");
+    console.log(response);
+    // await db
+    //   .collection("nweets")
+    //   .add({ text: nweet, createdAt: Date.now(), creatorId: userObj.uid })
+    //   .then((docRef) => {
+    //     console.log("Document written with ID: ", docRef.id);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error adding document: ", error);
+    //   });
+    // setNweet("");
   };
   const onChange = (event) => {
     const {
