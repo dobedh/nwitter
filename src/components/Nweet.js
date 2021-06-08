@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db } from "fbase";
+import { db, storageService } from "fbase";
 
 const Nweet = ({ nweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -11,6 +11,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     const ok = window.confirm("확실합니까?");
     if (ok) {
       db.doc(`nweets/${nweetObj.id}`).delete();
+      storageService.refFromURL(nweetObj.attachmentURL).delete();
     }
   };
   const onSubmit = (event) => {
@@ -37,6 +38,16 @@ const Nweet = ({ nweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
+          {nweetObj.attachmentURL && (
+            <>
+              <img
+                src={nweetObj.attachmentURL}
+                height="50px"
+                width="50px"
+                alt=""
+              />
+            </>
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>삭제</button>
